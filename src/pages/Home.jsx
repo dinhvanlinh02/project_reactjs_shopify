@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Footer from '../components/Footer/Footer';
 import Navbar from '../components/Navbar/Navbar';
 import { AiOutlineShoppingCart } from "react-icons/ai";
@@ -7,9 +7,24 @@ import Product from '../components/Product';
 import Hero from '../components/Hero/Hero';
 import Features from '../components/Features/Features';
 import Banner from '../components/Banner/Banner';
-import { Link } from 'react-router-dom';
+
 
 function Home() {
+    const [products, setProducts] = useState([]);
+    const fetchProduct = useCallback(async () => {
+        const response = await fetch(
+            `https://dummyjson.com/products?limit=16&skip=10`
+        );
+        const jsonResponse = await response.json();
+
+        setProducts(jsonResponse.products);
+
+    }, [])
+    useEffect(() => {
+        fetchProduct()
+    }, [fetchProduct]);
+
+
     return (
         <div>
 
@@ -30,7 +45,10 @@ function Home() {
                         className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-4"
                         data-test="product-list-container"
                     >
-                        <Product />
+                        {products.slice(0, 8).map((p) => (
+                            <Product key={p.id} productInfo={p} />
+
+                        ))}
                     </div>
                 </div>
                 {/* Banner */}
@@ -46,9 +64,11 @@ function Home() {
                         className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-4"
                         data-test="product-list-container"
                     >
-                        {/* Single Product */}
-                        <Product />
-                        <Product />
+
+                        {products.slice(8, 16).map((p) => (
+                            <Product key={p.id} productInfo={p} />
+
+                        ))}
 
                     </div>
                 </div>

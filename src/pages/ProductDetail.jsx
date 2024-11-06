@@ -12,71 +12,94 @@ import Reviews from "../components/Reviews";
 import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
 import Product from "../components/Product";
+import { useParams } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
+import SimilarProduct from "../components/SimmilarProduct/SimmilarProduct";
 const lorem =
   "It is important to take care of the patient, to be followed by the patient, but it will happen at such a time that there is a lot of work and pain. For to come to the smallest detail, no one should practice any kind of work unless he derives some benefit from it. Do not be angry with the pain in the reprimand in the pleasure he wants to be a hair from the pain in the hope that there is no breeding. Unless they are blinded by lust, they do not come forth; they are in fault who abandon their duties and soften their hearts, that is, their labors.";
 
 const ProductDetail = () => {
-  const product = {
-    id: 6,
-    title: "Calvin Klein CK One",
-    description:
-      "CK One by Calvin Klein is a classic unisex fragrance, known for its fresh and clean scent. It's a versatile fragrance suitable for everyday wear.",
-    category: "fragrances",
-    price: 49.99,
-    discountPercentage: 0.32,
-    rating: 4.85,
-    stock: 17,
-    tags: ["fragrances", "perfumes"],
-    brand: "Calvin Klein",
-    sku: "DZM2JQZE",
-    weight: 5,
-    dimensions: {
-      width: 11.53,
-      height: 14.44,
-      depth: 6.81,
-    },
-    warrantyInformation: "5 year warranty",
-    shippingInformation: "Ships overnight",
-    availabilityStatus: "In Stock",
-    reviews: [
-      {
-        rating: 5,
-        comment: "Great value for money!",
-        date: "2024-05-23T08:56:21.619Z",
-        reviewerName: "Sophia Brown",
-        reviewerEmail: "sophia.brown@x.dummyjson.com",
-      },
-      {
-        rating: 3,
-        comment: "Very disappointed!",
-        date: "2024-05-23T08:56:21.619Z",
-        reviewerName: "Madison Collins",
-        reviewerEmail: "madison.collins@x.dummyjson.com",
-      },
-      {
-        rating: 1,
-        comment: "Poor quality!",
-        date: "2024-05-23T08:56:21.619Z",
-        reviewerName: "Maya Reed",
-        reviewerEmail: "maya.reed@x.dummyjson.com",
-      },
-    ],
-    returnPolicy: "No return policy",
-    minimumOrderQuantity: 20,
-    meta: {
-      createdAt: "2024-05-23T08:56:21.619Z",
-      updatedAt: "2024-05-23T08:56:21.619Z",
-      barcode: "2210136215089",
-      qrCode: "https://assets.dummyjson.com/public/qr-code.png",
-    },
-    images: [
-      "https://cdn.dummyjson.com/products/images/fragrances/Calvin%20Klein%20CK%20One/1.png",
-      "https://cdn.dummyjson.com/products/images/fragrances/Calvin%20Klein%20CK%20One/2.png",
-      "https://cdn.dummyjson.com/products/images/fragrances/Calvin%20Klein%20CK%20One/3.png",
-    ],
-    thumbnail:
-      "https://cdn.dummyjson.com/products/images/fragrances/Calvin%20Klein%20CK%20One/thumbnail.png",
-  };
+  const [product, setproductInfo] = useState({
+    images: [],
+
+  });
+  const { id } = useParams();
+  const fetchProductInfo = useCallback(async () => {
+    const response = await fetch(
+      `https://dummyjson.com/products/${id}`
+    );
+    const jsonResponse = await response.json();
+
+    setproductInfo(jsonResponse);
+
+  }, [id])
+  useEffect(() => {
+    fetchProductInfo()
+  }, [fetchProductInfo]);
+
+
+
+  // const product = {
+  //   id: 6,
+  //   title: "Calvin Klein CK One",
+  //   description:
+  //     "CK One by Calvin Klein is a classic unisex fragrance, known for its fresh and clean scent. It's a versatile fragrance suitable for everyday wear.",
+  //   category: "fragrances",
+  //   price: 49.99,
+  //   discountPercentage: 0.32,
+  //   rating: 4.85,
+  //   stock: 17,
+  //   tags: ["fragrances", "perfumes"],
+  //   brand: "Calvin Klein",
+  //   sku: "DZM2JQZE",
+  //   weight: 5,
+  //   dimensions: {
+  //     width: 11.53,
+  //     height: 14.44,
+  //     depth: 6.81,
+  //   },
+  //   warrantyInformation: "5 year warranty",
+  //   shippingInformation: "Ships overnight",
+  //   availabilityStatus: "In Stock",
+  //   reviews: [
+  //     {
+  //       rating: 5,
+  //       comment: "Great value for money!",
+  //       date: "2024-05-23T08:56:21.619Z",
+  //       reviewerName: "Sophia Brown",
+  //       reviewerEmail: "sophia.brown@x.dummyjson.com",
+  //     },
+  //     {
+  //       rating: 3,
+  //       comment: "Very disappointed!",
+  //       date: "2024-05-23T08:56:21.619Z",
+  //       reviewerName: "Madison Collins",
+  //       reviewerEmail: "madison.collins@x.dummyjson.com",
+  //     },
+  //     {
+  //       rating: 1,
+  //       comment: "Poor quality!",
+  //       date: "2024-05-23T08:56:21.619Z",
+  //       reviewerName: "Maya Reed",
+  //       reviewerEmail: "maya.reed@x.dummyjson.com",
+  //     },
+  //   ],
+  //   returnPolicy: "No return policy",
+  //   minimumOrderQuantity: 20,
+  //   meta: {
+  //     createdAt: "2024-05-23T08:56:21.619Z",
+  //     updatedAt: "2024-05-23T08:56:21.619Z",
+  //     barcode: "2210136215089",
+  //     qrCode: "https://assets.dummyjson.com/public/qr-code.png",
+  //   },
+  //   images: [
+  //     "https://cdn.dummyjson.com/products/images/fragrances/Calvin%20Klein%20CK%20One/1.png",
+  //     "https://cdn.dummyjson.com/products/images/fragrances/Calvin%20Klein%20CK%20One/2.png",
+  //     "https://cdn.dummyjson.com/products/images/fragrances/Calvin%20Klein%20CK%20One/3.png",
+  //   ],
+  //   thumbnail:
+  //     "https://cdn.dummyjson.com/products/images/fragrances/Calvin%20Klein%20CK%20One/thumbnail.png",
+  // };
   return (
     <div>
       {/* Nav bar */}
@@ -103,13 +126,13 @@ const ProductDetail = () => {
             <div className="mt-1">
               <div className="leading-3">
                 <h2 className="font-medium text-blue-500 text-xl">
-                  ${(99.99).toFixed(2)}
+                  ${(product.price / product.discountPercentage).toFixed(2)}
                 </h2>
                 <span className="mr-2 text-sm line-through opacity-70 dark:text-white">
-                  ${99}
+                  ${product.price}
                 </span>
                 <span className="text-sm font-semibold dark:text-white">
-                  -{10}%
+                  -{product.discountPercentage}%
                 </span>
               </div>
             </div>
@@ -163,22 +186,8 @@ const ProductDetail = () => {
         </div>
         <hr className="mt-4" />
         {/* Similar Products */}
-        <div className="container mt-8 mx-auto px-4 dark:bg-slate-800">
-          <div className="sm:flex items-center justify-between">
-            <h2 className="text-4xl font-medium font-lora dark:text-white">
-              New Arrivals
-            </h2>
-          </div>
-          <div
-            className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-4"
-            data-test="product-list-container"
-          >
-            {/* Single Product */}
-            < Product />
-            < Product />
+        <SimilarProduct originProduct={product} />
 
-          </div>
-        </div>
         <br />
       </div>
       {/* Footer */}

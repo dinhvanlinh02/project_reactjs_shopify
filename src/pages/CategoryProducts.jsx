@@ -6,8 +6,25 @@ import RatingStar from "../components/RatingStart";
 import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
 import Product from "../components/Product";
+import { useCallback, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const CategoryProducts = () => {
+  const [products, setProducts] = useState([]);
+  const { categoryType } = useParams();
+  const fetchProduct = useCallback(async () => {
+    const response = await fetch(
+      `https://dummyjson.com/products/category/${categoryType}`
+    );
+    const jsonResponse = await response.json();
+
+    setProducts(jsonResponse.products);
+
+  }, [])
+  useEffect(() => {
+    fetchProduct()
+  }, [fetchProduct]);
+
   return (
     <div>
 
@@ -20,7 +37,11 @@ const CategoryProducts = () => {
         </div>
         <div className="grid gap-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 my-2">
           {/* Single Product */}
-          <Product />
+          {products.map((p) => (
+            <Product key={p.id} productInfo={p} />
+
+
+          ))}
         </div>
       </div>
 

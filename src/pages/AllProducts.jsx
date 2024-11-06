@@ -1,13 +1,21 @@
-import { AiOutlineShoppingCart } from "react-icons/ai";
-import RatingStar from "../components/RatingStart";
-import { BsSearch } from 'react-icons/bs';
-import { FaUser } from 'react-icons/fa';
-import { MdOutlineDarkMode, MdOutlineLightMode } from 'react-icons/md';
-import Navbar from "../components/Navbar/Navbar";
-import Footer from "../components/Footer/Footer";
+
 import Product from "../components/Product";
+import { useCallback, useEffect, useState } from "react";
 
 const AllProducts = () => {
+  const [products, setProducts] = useState([]);
+  const fetchProduct = useCallback(async () => {
+    const response = await fetch(
+      `https://dummyjson.com/products`
+    );
+    const jsonResponse = await response.json();
+
+    setProducts(jsonResponse.products);
+
+  }, [])
+  useEffect(() => {
+    fetchProduct()
+  }, [fetchProduct]);
   return (
     <div>
       {/* Nav bar */}
@@ -27,7 +35,10 @@ const AllProducts = () => {
               </div>
               <div className="grid gap-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
                 {/* Single product */}
-                <Product />
+                {products.map((p) => (
+                  <Product key={p.id} productInfo={p} />
+
+                ))}
               </div>
             </div>
           </div>
