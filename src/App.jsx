@@ -8,6 +8,8 @@ import ProductDetail from "./pages/ProductDetail";
 import Profile from "./pages/Profile";
 import WishList from "./pages/WishList";
 import LayOut from "./components/Layout/Index";
+import { Provider } from "react-redux";
+import { store } from './store'
 const router = createBrowserRouter([
   {
     path: "/",
@@ -48,7 +50,10 @@ const router = createBrowserRouter([
 function App() {
   return (
     <div>
-      <RouterProvider router={router} />
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
+
 
     </div>
   );

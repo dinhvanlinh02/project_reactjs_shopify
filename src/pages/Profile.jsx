@@ -1,9 +1,4 @@
-import { AiOutlineShoppingCart } from "react-icons/ai";
-import { BsSearch } from "react-icons/bs";
-import { FaUser } from "react-icons/fa";
-import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
-import Footer from "../components/Footer/Footer";
-import Navbar from "../components/Navbar/Navbar";
+
 
 const Profile = () => {
   const info = {

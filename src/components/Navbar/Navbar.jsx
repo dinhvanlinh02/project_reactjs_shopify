@@ -5,9 +5,28 @@ import { FaUser } from "react-icons/fa";
 import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
 import { Link, useNavigate } from 'react-router-dom';
 import AccountDropdown from '../AccountDropdown/AccountDropDown';
+import { useDispatch, useSelector } from 'react-redux';
+import { openLoginModal, toggleOpenCart } from '../../store/slices/commonSlice';
 
 const Navbar = () => {
-    const navigate = useNavigate()
+    const isLoginIs = useSelector((state) => state.authSlice.isLoggedIn)
+    const isModalOpen = useSelector((state) => state.commonSlice.isModalLoginOpen);
+    const cartItem = useSelector((state) => state.cartSlice.items);
+    console.log(cartItem);
+
+    let total = 0;
+    for (let i = 0; i < cartItem.length; i++) {
+        total += cartItem[i].quantity
+    }
+    const navigate = useNavigate();
+    const dispatch = useDispatch()
+    const HandleOpenLogin = () => {
+        dispatch(openLoginModal())
+    }
+    const HanhdleOpenCart = () => {
+        dispatch(toggleOpenCart())
+    }
+
     return (
         <div className="py-4 bg-white dark:bg-slate-800 top-0 sticky z-10 shadow-lg font-karla">
             <div className="container mx-auto px-4">
@@ -39,24 +58,27 @@ const Navbar = () => {
                             Categories
                         </a>
                         <div className="flex items-center gap-2">
-                            <AccountDropdown />
-                            <img
+                            {isLoginIs ? (<>  <img
                                 src="https://robohash.org/Terry.png?set=set4"
                                 alt="avatar"
                                 className="w-6"
                             />
-                            <FaUser className="text-gray-500 text-2xl dark:text-white" />
-                            <div className="text-gray-500 text-2xl">
-                                <span
-                                    className="cursor-pointer hover:opacity-85 dark:text-white"
-                                    data-test="login-btn"
-                                >
+                                <AccountDropdown />    <FaUser className="text-gray-500 text-2xl dark:text-white" />
+                                <div className="text-gray-500 text-2xl">
+                                    <span
+                                        onClick={HandleOpenLogin}
+                                        className="cursor-pointer hover:opacity-85 dark:text-white"
+                                        data-test="login-btn"
+                                    >
+                                        Login
+                                    </span>
+                                </div></>) : (<></>)}
 
-                                    Login
-                                </span>
-                            </div>
+
+
                         </div>
                         <div
+                            onClick={HanhdleOpenCart}
                             className="text-gray-500 text-[32px] relative hover:cursor-pointer hover:opacity-80"
                             data-test="cart-btn"
                         >
@@ -65,7 +87,7 @@ const Navbar = () => {
                                 className="absolute top-[-15px] right-[-10px] bg-red-600 w-[25px] h-[25px] rounded-full text-white text-[14px] grid place-items-center"
                                 data-test="cart-item-count"
                             >
-                                {999}
+                                {total}
                             </div>
                         </div>
                         <div className="flex">

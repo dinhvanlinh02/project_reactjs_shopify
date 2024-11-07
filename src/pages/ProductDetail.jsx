@@ -1,121 +1,72 @@
 import { AiOutlineShoppingCart } from "react-icons/ai";
-import { BsSearch } from "react-icons/bs";
-import { FaUser } from "react-icons/fa";
-import {
-  MdFavoriteBorder,
-  MdOutlineDarkMode,
-  MdOutlineLightMode,
-} from "react-icons/md";
+
+import { MdFavoriteBorder } from "react-icons/md";
 import RatingStar from "../components/RatingStart";
 import { FaHandHoldingDollar } from "react-icons/fa6";
 import Reviews from "../components/Reviews";
-import Navbar from "../components/Navbar/Navbar";
-import Footer from "../components/Footer/Footer";
-import Product from "../components/Product";
+
 import { useParams } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 import SimilarProduct from "../components/SimmilarProduct/SimmilarProduct";
-const lorem =
-  "It is important to take care of the patient, to be followed by the patient, but it will happen at such a time that there is a lot of work and pain. For to come to the smallest detail, no one should practice any kind of work unless he derives some benefit from it. Do not be angry with the pain in the reprimand in the pleasure he wants to be a hair from the pain in the hope that there is no breeding. Unless they are blinded by lust, they do not come forth; they are in fault who abandon their duties and soften their hearts, that is, their labors.";
+import { useDispatch, useSelector } from "react-redux";
+import { openLoginModal } from "../store/slices/commonSlice";
+
+import { addItemToCart } from "../store/slices/cartSlice";
+
+const lorem = "It is important to take care of the patient...";
 
 const ProductDetail = () => {
-  const [product, setproductInfo] = useState({
+  const [product, setProductInfo] = useState({
     images: [],
-
   });
+  const isLoggIn = useSelector((state) => state.authSlice.isLoggedIn);
   const { id } = useParams();
+  const dispatch = useDispatch();
+
   const fetchProductInfo = useCallback(async () => {
-    const response = await fetch(
-      `https://dummyjson.com/products/${id}`
-    );
-    const jsonResponse = await response.json();
+    try {
+      const response = await fetch(`https://dummyjson.com/products/${id}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch product information.");
+      }
+      const jsonResponse = await response.json();
+      setProductInfo(jsonResponse);
+    } catch (error) {
+      console.error("Error fetching product info:", error);
+    }
+  }, [id]);
 
-    setproductInfo(jsonResponse);
-
-  }, [id])
   useEffect(() => {
-    fetchProductInfo()
+    fetchProductInfo();
   }, [fetchProductInfo]);
 
+  const addtocart = () => {
+    if (isLoggIn) {
+      console.log("add to cart");
 
+      dispatch(addItemToCart(product));
+    } else {
+      dispatch(openLoginModal());
+    }
+  };
 
-  // const product = {
-  //   id: 6,
-  //   title: "Calvin Klein CK One",
-  //   description:
-  //     "CK One by Calvin Klein is a classic unisex fragrance, known for its fresh and clean scent. It's a versatile fragrance suitable for everyday wear.",
-  //   category: "fragrances",
-  //   price: 49.99,
-  //   discountPercentage: 0.32,
-  //   rating: 4.85,
-  //   stock: 17,
-  //   tags: ["fragrances", "perfumes"],
-  //   brand: "Calvin Klein",
-  //   sku: "DZM2JQZE",
-  //   weight: 5,
-  //   dimensions: {
-  //     width: 11.53,
-  //     height: 14.44,
-  //     depth: 6.81,
-  //   },
-  //   warrantyInformation: "5 year warranty",
-  //   shippingInformation: "Ships overnight",
-  //   availabilityStatus: "In Stock",
-  //   reviews: [
-  //     {
-  //       rating: 5,
-  //       comment: "Great value for money!",
-  //       date: "2024-05-23T08:56:21.619Z",
-  //       reviewerName: "Sophia Brown",
-  //       reviewerEmail: "sophia.brown@x.dummyjson.com",
-  //     },
-  //     {
-  //       rating: 3,
-  //       comment: "Very disappointed!",
-  //       date: "2024-05-23T08:56:21.619Z",
-  //       reviewerName: "Madison Collins",
-  //       reviewerEmail: "madison.collins@x.dummyjson.com",
-  //     },
-  //     {
-  //       rating: 1,
-  //       comment: "Poor quality!",
-  //       date: "2024-05-23T08:56:21.619Z",
-  //       reviewerName: "Maya Reed",
-  //       reviewerEmail: "maya.reed@x.dummyjson.com",
-  //     },
-  //   ],
-  //   returnPolicy: "No return policy",
-  //   minimumOrderQuantity: 20,
-  //   meta: {
-  //     createdAt: "2024-05-23T08:56:21.619Z",
-  //     updatedAt: "2024-05-23T08:56:21.619Z",
-  //     barcode: "2210136215089",
-  //     qrCode: "https://assets.dummyjson.com/public/qr-code.png",
-  //   },
-  //   images: [
-  //     "https://cdn.dummyjson.com/products/images/fragrances/Calvin%20Klein%20CK%20One/1.png",
-  //     "https://cdn.dummyjson.com/products/images/fragrances/Calvin%20Klein%20CK%20One/2.png",
-  //     "https://cdn.dummyjson.com/products/images/fragrances/Calvin%20Klein%20CK%20One/3.png",
-  //   ],
-  //   thumbnail:
-  //     "https://cdn.dummyjson.com/products/images/fragrances/Calvin%20Klein%20CK%20One/thumbnail.png",
-  // };
   return (
     <div>
-      {/* Nav bar */}
-      {/* Main */}
       <div className="container mx-auto pt-8 dark:text-white">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 px-4 font-karla">
           <div className="space-y-2">
-            <img src={product.images[0]} alt="selected" className="h-80" />
+            {product.images[0] ? (
+              <img src={product.images[0]} alt="selected" className="h-80" />
+            ) : (
+              <p>No Image Available</p>
+            )}
             <div className="flex space-x-1 items-center">
               {product.images.map((_img, index) => (
                 <img
                   src={_img}
                   key={_img}
                   alt="thumb"
-                  className={`w-12 cursor-pointer hover:border-2 hover:border-black ${index === 0 ? "border-2 border-black" : ""
-                    }`}
+                  className={`w-12 cursor-pointer hover:border-2 hover:border-black ${index === 0 ? "border-2 border-black" : ""}`}
                 />
               ))}
             </div>
@@ -126,7 +77,7 @@ const ProductDetail = () => {
             <div className="mt-1">
               <div className="leading-3">
                 <h2 className="font-medium text-blue-500 text-xl">
-                  ${(product.price / product.discountPercentage).toFixed(2)}
+                  ${(product.price * (1 - product.discountPercentage / 100)).toFixed(2)}
                 </h2>
                 <span className="mr-2 text-sm line-through opacity-70 dark:text-white">
                   ${product.price}
@@ -160,8 +111,10 @@ const ProductDetail = () => {
             </div>
             <div className="flex flex-wrap items-center mt-4 mb-2 space-x-2">
               <button
+
                 type="button"
                 className="flex items-center space-x-1 mb-2 hover:bg-pink-700 text-white p-2 rounded bg-pink-500"
+                onClick={addtocart} // Gọi addtocart khi nhấn nút
               >
                 <AiOutlineShoppingCart />
                 <span>ADD TO CART</span>
@@ -185,12 +138,9 @@ const ProductDetail = () => {
           {product && <Reviews />}
         </div>
         <hr className="mt-4" />
-        {/* Similar Products */}
         <SimilarProduct originProduct={product} />
-
         <br />
       </div>
-      {/* Footer */}
     </div>
   );
 };

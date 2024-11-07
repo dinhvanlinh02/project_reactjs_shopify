@@ -1,10 +1,4 @@
-import { AiOutlineShoppingCart } from "react-icons/ai";
-import { BsSearch } from "react-icons/bs";
-import { FaUser } from "react-icons/fa";
-import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
-import RatingStar from "../components/RatingStart";
-import Navbar from "../components/Navbar/Navbar";
-import Footer from "../components/Footer/Footer";
+
 import Product from "../components/Product";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
