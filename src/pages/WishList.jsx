@@ -1,10 +1,6 @@
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import RatingStar from "../components/RatingStart";
-import { BsSearch } from "react-icons/bs";
-import { FaUser } from "react-icons/fa";
-import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
-import Navbar from "../components/Navbar/Navbar";
-import Footer from "../components/Footer/Footer";
+
 
 const WishList = () => {
   return (

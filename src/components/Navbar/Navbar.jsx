@@ -7,11 +7,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import AccountDropdown from '../AccountDropdown/AccountDropDown';
 import { useDispatch, useSelector } from 'react-redux';
 import { openLoginModal, toggleOpenCart } from '../../store/slices/commonSlice';
+import { initialState } from '../../store/slices/authSlice';
 
 const Navbar = () => {
     const isLoginIs = useSelector((state) => state.authSlice.isLoggedIn)
     const isModalOpen = useSelector((state) => state.commonSlice.isModalLoginOpen);
     const cartItem = useSelector((state) => state.cartSlice.items);
+    const islogin = initialState.isLoggedIn
+
     console.log(cartItem);
 
     let total = 0;
@@ -70,7 +73,7 @@ const Navbar = () => {
                                         className="cursor-pointer hover:opacity-85 dark:text-white"
                                         data-test="login-btn"
                                     >
-                                        Login
+                                        {islogin ? "Login" : ""}
                                     </span>
                                 </div></>) : (<></>)}
 
